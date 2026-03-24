@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Veronica 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  padding:0;
+  font-family:'Poppins',sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:linear-gradient(to bottom, #ffeef0, #ffccf0);
+  overflow:hidden;
+}
+.container{
+  background:rgba(255,255,255,0.95);
+  padding:30px 20px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  width:90%;
+  max-width:400px;
+  text-align:center;
+  position:relative;
+}
+h1{color:#ff6699;font-size:2rem;margin-bottom:20px;}
+.question{font-size:1.2rem;margin:20px 0;}
+.buttons{display:flex;justify-content:space-around;margin-top:20px;position:relative;height:50px;}
+button{padding:10px 20px;border:none;border-radius:10px;font-weight:600;cursor:pointer;transition:0.3s;font-size:1rem;}
+button.yes{background:#ff6699;color:#fff;}
+button.no{background:#8a2be2;color:#fff;}
+button:hover{transform:translateY(-3px);}
+#emoji{font-size:2rem;margin-top:15px;display:none;}
+#message{margin-top:10px;color:#ff0066;font-weight:bold;}
+.heart{position:absolute;font-size:1.5rem;animation:float 1s ease-out forwards;pointer-events:none;}
+#agreement{display:none; margin-top:20px;}
+canvas{border:1px solid #ccc;border-radius:10px;}
+#signBtn{margin-top:10px;padding:10px 20px;border-radius:10px;background:#ff6699;color:#fff;border:none;font-weight:600;cursor:pointer;}
+#finalMsg{display:none;margin-top:20px;color:#ff0066;font-weight:bold;}
+footer{margin-top:15px;color:#777;font-size:0.8rem;}
+@keyframes float{
+  0%{opacity:1;transform:translateY(0) scale(1);}
+  100%{opacity:0;transform:translateY(-50px) scale(1.5);}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>💖 For Veronica 💖</h1>
+  <div id="question-container">
+    <div class="question" id="question">Do you like me? 💕</div>
+    <div class="buttons">
+      <button class="yes" id="yesBtn">Yes</button>
+      <button class="no" id="noBtn">No</button>
+    </div>
+    <div id="emoji">😢</div>
+    <div id="message"></div>
+  </div>
+
+  <div id="agreement">
+    <h2>Marriage Agreement 💍</h2>
+    <p>I, Veronica Lyamuya, hereby agree to marry [Your Name]. I consent fully, with love, honor, and joy.</p>
+    <canvas id="canvas" width="300" height="150"></canvas>
+    <button id="signBtn">Confirm & Sign</button>
+  </div>
+
+  <div id="finalMsg">
+    <h2>💖 Thank you for accepting this marriage! 💖</h2>
+    <p>All copies reserved ©2026</p>
+    <p id="popupMsg"></p>
+  </div>
+  <footer>All copies reserved ©2026</footer>
+</div>
+
+<!-- Sound FX -->
+<audio id="yesSound" src="https://www.soundjay.com/human/applause-01.mp3" preload="auto"></audio>
+<audio id="noSound1" src="https://www.soundjay.com/button/button-10.mp3" preload="auto"></audio>
+<audio id="noSound2" src="https://www.soundjay.com/button/button-3.mp3" preload="auto"></audio>
+<audio id="noSound3" src="https://www.soundjay.com/button/button-5.mp3" preload="auto"></audio>
+<audio id="noSound4" src="https://www.soundjay.com/button/button-7.mp3" preload="auto"></audio>
+
+<script>
+const questions = [
+  "Do you like me? 💕",
+  "Will you go on a date with me? 🌹",
+  "Do you miss me when I'm away? 💌",
+  "Will you watch a movie together? 🍿",
+  "Do you enjoy our little moments? 🌸",
+  "Will you be my Valentine? 😘",
+  "Do you love our memories? ❤️",
+  "Will you dance with me someday? 💃",
+  "Do you want to travel together? ✈️",
+  "Will you marry me, sweetie? 💍"
+];
+
+let current = 0;
+
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const questionEl = document.getElementById('question');
+const emoji = document.getElementById('emoji');
+const message = document.getElementById('message');
+const yesSound = document.getElementById('yesSound');
+const agreement = document.getElementById('agreement');
+const finalMsg = document.getElementById('finalMsg');
+const popupMsg = document.getElementById('popupMsg');
+const signBtn = document.getElementById('signBtn');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+function createHeart(x, y){
+  const heart=document.createElement('div');
+  heart.className='heart';
+  heart.style.left=x+'px';
+  heart.style.top=y+'px';
+  heart.innerText='💖';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),1000);
+}
+
+// Yes button logic
+yesBtn.addEventListener('click', ()=>{
+  yesSound.currentTime=0;
+  yesSound.play();
+  for(let i=0;i<4;i++){
+    createHeart(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
+  }
+  current++;
+  emoji.style.display='none';
+  message.innerText='';
+  noBtn.style.display='inline-block';
+  if(current<questions.length){
+    questionEl.innerText=questions[current];
+  } else {
+    // Show agreement
+    document.getElementById('question-container').style.display='none';
+    agreement.style.display='block';
+  }
+});
+
+// No button logic
+noBtn.addEventListener('mouseover', ()=>{
+  const noSounds = [
+    document.getElementById('noSound1'),
+    document.getElementById('noSound2'),
+    document.getElementById('noSound3'),
+    document.getElementById('noSound4')
+  ];
+  const randS=Math.floor(Math.random()*noSounds.length);
+  if(noSounds[randS]){
+    noSounds[randS].currentTime=0;
+    noSounds[randS].play();
+  }
+  
+  emoji.style.display='block';
+  const rand=Math.random();
+  if(rand<0.25){
+    emoji.innerText='😠';
+    message.innerText="Oh come on... try again!";
+  } else if(rand<0.5){
+    emoji.innerText='😢';
+    message.innerText="Aww... not nice!";
+  } else if(rand<0.75){
+    emoji.innerText='😡';
+    message.innerText="Hmm... No way!";
+  } else {
+    message.innerText="You can't click that! 😜";
+  }
+
+  // Move NO button randomly
+  const containerRect=document.querySelector('.buttons').getBoundingClientRect();
+  noBtn.style.position='absolute';
+  noBtn.style.left=(Math.random()*(containerRect.width-60))+'px';
+  noBtn.style.top=(Math.random()*(containerRect.height-35))+'px';
+});
+
+// Signature pad logic
+let drawing=false;
+canvas.addEventListener('mousedown', ()=>drawing=true);
+canvas.addEventListener('mouseup', ()=>drawing=false);
+canvas.addEventListener('mouseout', ()=>drawing=false);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('touchstart', e=>{drawing=true; draw(e);});
+canvas.addEventListener('touchend', ()=>drawing=false);
+canvas.addEventListener('touchmove', draw);
+
+function draw(e){
+  if(!drawing) return;
+  e.preventDefault();
+  let rect=canvas.getBoundingClientRect();
+  let x=(e.clientX||e.touches[0].clientX)-rect.left;
+  let y=(e.clientY||e.touches[0].clientY)-rect.top;
+  ctx.fillStyle='red';
+  ctx.beginPath();
+  ctx.arc(x,y,3,0,Math.PI*2);
+  ctx.fill();
+}
+
+// Sign button
+signBtn.addEventListener('click', ()=>{
+  agreement.style.display='none';
+  finalMsg.style.display='block';
+  popupMsg.innerText="I love you so much baby ❤️ Let's begin together this new chapter!";
+});
+
+</script>
+</body>
+</html>
