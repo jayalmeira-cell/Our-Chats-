@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Veronica 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(to bottom,#ffdde1,#ee9ca7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  position:relative;
+}
+
+.container{
+  text-align:center;
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  width:95%;
+  max-width:400px;
+  position:relative;
+  box-sizing:border-box;
+}
+
+h1{
+  color:#ff4d6d;
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
+#question{
+  margin:15px 0;
+  font-size:1.2rem;
+}
+
+button{
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:5px;
+}
+
+#yesBtn{background:#ff4d6d;color:white;}
+#noBtn{background:#6a0dad;color:white;position:fixed; z-index:50;}
+
+#saveBtn{
+  background:#ff4d6d;
+  color:white;
+  margin-top:10px;
+  width:80%;
+  max-width:250px;
+}
+
+.emoji{
+  position:absolute;
+  font-size:2rem;
+  animation:float 2s linear forwards;
+}
+
+@keyframes float{
+  0%{opacity:1;transform:translateY(0);}
+  100%{opacity:0;transform:translateY(-150px);}
+}
+
+footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  text-align:center;
+  color:#ff4d6d;
+  font-weight:bold;
+  background:rgba(255,255,255,0.95);
+  padding:8px 0;
+  z-index:1000;
+  font-size:0.9rem;
+}
+
+.note{
+  position:absolute;
+  background:#fffdd0;
+  color:#000;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:0.9rem;
+  opacity:0.95;
+  z-index:100;
+  transition:opacity 0.5s ease;
+}
+
+.signature-area{
+  margin-top:20px;
+  text-align:center;
+}
+
+.signature-line{
+  border-bottom:2px solid #000;
+  width:90%;
+  max-width:350px;
+  height:40px;
+  margin:10px auto;
+  position:relative;
+}
+
+.signature-input{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border:none;
+  background:transparent;
+  font-size:1.2rem;
+  font-family:'Poppins',sans-serif;
+  outline:none;
+  padding:5px;
+}
+
+canvas{
+  border:1px solid #000;
+  border-radius:10px;
+  margin-top:10px;
+  max-width:95%;
+  width:350px;
+  height:150px;
+  touch-action:none;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Hi Veronica 💖</h1>
+  <div id="question">Do you love me?</div>
+  <button id="yesBtn">Yes</button>
+  <button id="noBtn">No</button>
+  <div id="message"></div>
+</div>
+
+<footer>© 2026 All copies reserved</footer>
+
+<audio id="noSound" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
+<audio id="yesSound" src="https://www.soundjay.com/button/button-3.mp3"></audio>
+
+<script>
+const questions = [
+"Do you love me?","Will you stay with me forever?","Do you miss me?",
+"Do you want to travel with me?","Will you hold my hand always?","Do you think about me?",
+"Do you like my smile?","Will you laugh with me?","Do you want to build life together?",
+"Will you support me?","Do you enjoy my company?","Will you be my happiness?",
+"Do you want adventures together?","Will you trust me always?","Do you want endless love?",
+"Will you share dreams with me?","Do you love our moments?","Will you stay loyal?",
+"Do you want forever with me?","Will you marry me? 💍","What will you wear on our date?",
+"Do you like surprises?","Will you dance with me?","Do you love my jokes?",
+"Do you want to cook together?","Will you read with me?","Do you want to go hiking?",
+"Do you love sunsets with me?","Will you take photos together?","Do you like late night talks?"
+];
+
+const noTexts = [
+"Hey 😡 stop that!","No is not allowed!","Try again 😢","Don't do that!","You can't escape!",
+"Only YES works!","Not possible 😡","Come on 😏","Why are you like this?","You are going nowhere!",
+"You belong to me!","Stop touching!","Why do you resist?","Come back here!","No cheating 😠",
+"Don't run!","You can't hide!","Only YES counts!","I won't let you go!","Stop playing!",
+"Why refuse me?","No means no? Not here 😤","You must say YES!","Don't be stubborn!","Stop ignoring me!",
+"Come on babe!","I am serious!","You cannot win!","No games allowed!","Answer correctly!"
+];
+
+let index=0;
+const question=document.getElementById("question");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const message=document.getElementById("message");
+
+// YES reaction
+function yesReaction(){
+  const emojis=["😍","🥰","😘","💖","💕","🤗","😄"];
+  for(let i=0;i<5;i++){
+    let e=document.createElement("div");
+    e.className="emoji";
+    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.left=Math.random()*100+"vw";
+    e.style.top=Math.random()*100+"vh";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),2000);
+  }
+}
+
+// YES button
+yesBtn.onclick=()=>{
+  document.getElementById("yesSound").play();
+  yesReaction();
+  index++;
+  if(index<questions.length){
+    question.innerText=questions[index];
+  }else{
+    document.body.innerHTML=`
+    <div style="text-align:center;padding:15px; max-width:400px; margin:auto;">
+      <h2>💖 Thank you Veronica 💖</h2>
+      <p>I, Veronica, agree to marry Jamal Hassan ❤️</p>
+      <p>Our journey begins today, forever intertwined with love and laughter 💕</p>
+      <div class="signature-area">
+        <label>Type your initials on the line:</label>
+        <div class="signature-line">
+          <input class="signature-input" placeholder="V.L."/>
+        </div>
+        <label>Or draw your signature below:</label>
+        <canvas id="sigCanvas"></canvas>
+        <button id="saveBtn">💾 Save Signature</button>
+      </div>
+    </div>`;
+
+// Canvas
+const canvas=document.getElementById('sigCanvas');
+canvas.width=canvas.offsetWidth;
+canvas.height=150;
+const ctx=canvas.getContext('2d');
+let drawing=false;
+const input=document.querySelector('.signature-input');
+
+// Draw
+canvas.addEventListener('mousedown',e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
+canvas.addEventListener('mousemove',e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();}});
+canvas.addEventListener('mouseup',()=>{drawing=false;ctx.beginPath();});
+canvas.addEventListener('mouseleave',()=>{drawing=false;ctx.beginPath();});
+
+canvas.addEventListener('touchstart',e=>{drawing=true;let t=e.touches[0];ctx.beginPath();ctx.moveTo(t.clientX-canvas.getBoundingClientRect().left,t.clientY-canvas.getBoundingClientRect().top);});
+canvas.addEventListener('touchmove',e=>{if(drawing){let t=e.touches[0];ctx.lineTo(t.clientX-canvas.getBoundingClientRect().left,t.clientY-canvas.getBoundingClientRect().top);ctx.stroke();}});
+canvas.addEventListener('touchend',()=>{drawing=false;ctx.beginPath();});
+
+// Typing initials
+input.addEventListener('input',()=>{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.font="40px 'Poppins',sans-serif";
+  ctx.fillStyle="#ff4d6d";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.fillText(input.value,canvas.width/2,canvas.height/2);
+});
+
+// Save button
+const saveBtn=document.getElementById('saveBtn');
+saveBtn.onclick=()=>{
+  const link=document.createElement('a');
+  link.download='Veronica_Signature.png';
+  link.href=canvas.toDataURL();
+  link.click();
+};
+  }
+};
+
+// NO button chaos (slow)
+let moving=false;
+function moveNoButton(){
+  const x=Math.random()*(window.innerWidth-80);
+  const y=Math.random()*(window.innerHeight-50);
+  noBtn.style.left=x+"px";
+  noBtn.style.top=y+"px";
+}
+
+function chaosMove(){
+  if(moving){
+    moveNoButton();
+    setTimeout(chaosMove,2500);
+  }
+}
+
+noBtn.onclick=()=>{
+  moving=true;
+  chaosMove();
+  document.getElementById("noSound").play();
+
+  let note=document.createElement("div");
+  note.className="note";
+  note.innerText=noTexts[Math.floor(Math.random()*noTexts.length)];
+  note.style.left=(window.innerWidth/2 - 100 + (Math.random()*50-25))+"px";
+  note.style.top=(window.innerHeight/2 - 50 + (Math.random()*50-25))+"px";
+  document.body.appendChild(note);
+  setTimeout(()=>note.remove(),2000);
+
+  for(let i=0;i<3;i++){
+    let e=document.createElement("div");
+    e.className="emoji";
+    e.innerText=Math.random()>0.5?"😡":"😢";
+    e.style.left=Math.random()*100+"vw";
+    e.style.top=Math.random()*100+"vh";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),2000);
+  }
+};
+</script>
+</body>
+</html>
