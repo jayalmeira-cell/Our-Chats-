@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Veronica 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(to bottom,#ffdde1,#ee9ca7);
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  flex-direction:column;
+}
+
+.container{
+  text-align:center;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  width:90%;
+  max-width:500px;
+  position:relative;
+}
+
+h1{color:#ff4d6d;font-size:2rem;}
+#question{margin:20px 0;font-size:1.2rem;}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:5px;
+}
+
+#yesBtn{background:#ff4d6d;color:white;}
+#noBtn{background:#6a0dad;color:white;position:fixed;}
+
+.emoji{
+  position:absolute;
+  font-size:2rem;
+  animation:float 2s linear forwards;
+}
+
+@keyframes float{
+  0%{opacity:1;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(-150px)}
+}
+
+#message{
+  margin-top:15px;
+  min-height:30px;
+  color:#333;
+  font-weight:600;
+}
+
+.note-popup{
+  position:absolute;
+  background-color:#fffdd0; /* cream color */
+  color:#333;
+  padding:10px 15px;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+  font-weight:600;
+  max-width:220px;
+  text-align:center;
+  animation:fadeout 2s forwards;
+}
+
+@keyframes fadeout{
+  0%{opacity:1}
+  100%{opacity:0}
+}
+
+footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  text-align:center;
+  color:#ff4d6d;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Hi Veronica 💖</h1>
+  <div id="question">Do you love me?</div>
+
+  <button id="yesBtn">Yes</button>
+  <button id="noBtn">No</button>
+
+  <div id="message"></div>
+</div>
+
+<footer>© 2026 All copies reserved</footer>
+
+<audio id="yesSound" src="https://www.soundjay.com/button/button-3.mp3"></audio>
+<audio id="noSound" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
+
+<script>
+const questions = [
+"Do you love me?",
+"Will you stay with me forever?",
+"Do you miss me?",
+"Do you want to travel with me?",
+"Will you hold my hand always?",
+"Do you think about me?",
+"Do you like my smile?",
+"Will you laugh with me?",
+"Do you want to build life together?",
+"Will you support me?",
+"Do you enjoy my company?",
+"Will you be my happiness?",
+"Do you want adventures together?",
+"Will you trust me always?",
+"Do you want endless love?",
+"Will you share dreams with me?",
+"Do you love our moments?",
+"Will you stay loyal?",
+"Do you want forever with me?",
+"Will you marry me? 💍",
+"Will you cook with me?",
+"Will you dance with me?",
+"Will you go on picnics with me?",
+"Will you read with me?",
+"Will you sing with me?",
+"Will you watch sunsets with me?",
+"Will you cuddle with me?",
+"Will you take trips with me?",
+"Will you explore together?",
+"Will you hold my heart?"
+];
+
+const noTexts = [
+"Hey 😡 stop that!","No is not allowed!","Try again 😢","Don't do that!",
+"You can't escape!","Only YES works!","Not possible 😡","Come on 😏",
+"Why are you like this?","You are going nowhere!","You belong to me!","Don't press me!",
+"Stop it!","This is funny 😜","Nooo!","Try harder 😤","Can't touch!","Impossible!",
+"Not allowed!","You're trapped!","Haha 🤪","Keep trying!","Nice try 😏",
+"Can't click!","Out of options!","Just YES!","Do it again!","No way 😡",
+"Stop playing!","Hahaha 😂","No escape!","Not happening!"
+];
+
+let index=0;
+const question=document.getElementById("question");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const message=document.getElementById("message");
+const yesSound=document.getElementById("yesSound");
+const noSound=document.getElementById("noSound");
+
+// YES reactions
+function yesReaction(){
+  const emojis=["😍","🥰","😘","💖","💕","🤗","😄"];
+  for(let i=0;i<5;i++){
+    let e=document.createElement("div");
+    e.className="emoji";
+    e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.left=Math.random()*100+"vw";
+    e.style.top=Math.random()*100+"vh";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),2000);
+  }
+}
+
+// NO Chaos
+let moving=false;
+function moveNoButton(){
+  const x=Math.random()*(window.innerWidth-80);
+  const y=Math.random()*(window.innerHeight-50);
+  noBtn.style.left=x+"px";
+  noBtn.style.top=y+"px";
+}
+function chaosMove(){
+  if(moving){
+    moveNoButton();
+    setTimeout(chaosMove,800); // slow movement
+  }
+}
+
+// NO Pop-up notes
+function showNoNote(){
+  const note=document.createElement("div");
+  note.className="note-popup";
+  note.innerText=noTexts[Math.floor(Math.random()*noTexts.length)];
+  note.style.left=Math.random()*70+"%";
+  note.style.top=Math.random()*70+"%";
+  document.body.appendChild(note);
+  setTimeout(()=>note.remove(),2000); // disappear after 2s
+}
+
+// Button actions
+yesBtn.onclick=()=>{
+  yesSound.play();
+  yesReaction();
+  index++;
+  if(index<questions.length){
+    question.innerText=questions[index];
+  }else{
+    question.innerText="💖 Thank you Veronica! 💖";
+    yesBtn.style.display="none";
+    noBtn.style.display="none";
+  }
+};
+
+noBtn.onclick=()=>{
+  noSound.play();
+  moving=true;
+  chaosMove();
+  showNoNote();
+};
+
+</script>
+
+</body>
+</html>
