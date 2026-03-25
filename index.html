@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Veronica 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:black;
+  color:white;
+  overflow:hidden;
+  text-align:center;
+}
+
+#intro{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:2rem;
+  animation:fadeOut 3s forwards 2s;
+}
+
+@keyframes fadeOut{
+  to{opacity:0;visibility:hidden;}
+}
+
+.container{
+  margin-top:80px;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+#yesBtn{
+  background:#ff4d6d;
+  color:white;
+  box-shadow:0 0 10px pink;
+}
+
+#noBtn{
+  background:#6a0dad;
+  color:white;
+  position:fixed;
+}
+
+.emoji{
+  position:absolute;
+  font-size:2rem;
+  animation:float 2s linear forwards;
+}
+
+@keyframes float{
+  0%{opacity:1;}
+  100%{opacity:0;transform:translateY(-150px);}
+}
+
+footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  color:#ff4d6d;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">💖 Loading love... 💖</div>
+
+<div class="container">
+<h1>Hi Veronica 💖</h1>
+<h2 id="question">Do you love me?</h2>
+
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
+
+<div id="msg"></div>
+</div>
+
+<footer>© 2026 All copies reserved</footer>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+<audio id="heartbeat" loop src="https://www.soundjay.com/human/heartbeat-01a.mp3"></audio>
+<audio id="yesSound" src="https://www.soundjay.com/human/applause-8.mp3"></audio>
+<audio id="noSound" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
+
+<script>
+
+const questions=[
+"Do you love me?",
+"Will you stay with me forever?",
+"Do you miss me?",
+"Do you want adventures with me?",
+"Will you hold my hand always?",
+"Do you think about me?",
+"Do you want our future together?",
+"Will you be my happiness?",
+"Do you trust me?",
+"Will you marry me? 💍"
+];
+
+let i=0;
+
+const q=document.getElementById("question");
+const yes=document.getElementById("yesBtn");
+const no=document.getElementById("noBtn");
+
+// start music on first click
+document.body.onclick=()=>{
+bgMusic.play();
+heartbeat.play();
+};
+
+// HEART RAIN ❤️
+setInterval(()=>{
+let h=document.createElement("div");
+h.innerText="❤️";
+h.style.position="fixed";
+h.style.left=Math.random()*100+"vw";
+h.style.top="100vh";
+h.style.animation="floatUp 4s linear";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+},300);
+
+const style=document.createElement('style');
+style.innerHTML=`
+@keyframes floatUp{
+from{transform:translateY(0);}
+to{transform:translateY(-100vh);}
+}`;
+document.head.appendChild(style);
+
+// YES
+yes.onclick=()=>{
+yesSound.play();
+emoji("😍","💖","🥰");
+
+i++;
+if(i<questions.length){
+q.innerText=questions[i];
+}else{
+final();
+}
+};
+
+// NO CHAOS
+let moving=false;
+function move(){
+if(moving){
+no.style.left=Math.random()*window.innerWidth+"px";
+no.style.top=Math.random()*window.innerHeight+"px";
+setTimeout(move,100);
+}
+}
+
+no.onclick=()=>{
+moving=true;
+move();
+noSound.play();
+emoji("😡","😢");
+};
+
+// emoji
+function emoji(...arr){
+for(let j=0;j<10;j++){
+let e=document.createElement("div");
+e.className="emoji";
+e.innerText=arr[Math.floor(Math.random()*arr.length)];
+e.style.left=Math.random()*100+"vw";
+e.style.top=Math.random()*100+"vh";
+document.body.appendChild(e);
+setTimeout(()=>e.remove(),2000);
+}
+}
+
+// FINAL
+function final(){
+document.body.innerHTML=`
+<h1>💍 MARRIAGE CONTRACT 💍</h1>
+<p>I, Veronica, agree to marry Jamal Hassan ❤️</p>
+<canvas id="c" width="300" height="150"></canvas>
+<br>
+<button onclick="alert('Signed ❤️')">Submit</button>
+<h2>I LOVE YOU 💖</h2>
+<footer>© 2026 All copies reserved</footer>
+`;
+
+bgMusic.src="https://www.bensound.com/bensound-music/bensound-love.mp3";
+bgMusic.play();
+
+fireworks();
+ring();
+sign();
+}
+
+// FIREWORKS 🎆
+function fireworks(){
+for(let i=0;i<200;i++){
+let f=document.createElement("div");
+f.innerText=["🎆","✨","🎉"][Math.floor(Math.random()*3)];
+f.style.position="fixed";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*100+"vh";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),3000);
+}
+}
+
+// RING 💍
+function ring(){
+let r=document.createElement("div");
+r.innerText="💍";
+r.style.position="fixed";
+r.style.fontSize="60px";
+r.style.left="50%";
+r.style.top="50%";
+r.style.transform="translate(-50%,-50%)";
+r.style.animation="spin 2s infinite linear";
+document.body.appendChild(r);
+
+let s=document.createElement("style");
+s.innerHTML="@keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}";
+document.head.appendChild(s);
+}
+
+// SIGNATURE
+function sign(){
+let c=document.getElementById("c");
+let ctx=c.getContext("2d");
+let draw=false;
+
+c.onmousedown=()=>draw=true;
+c.onmouseup=()=>draw=false;
+c.onmousemove=(e)=>{
+if(!draw)return;
+ctx.lineTo(e.offsetX,e.offsetY);
+ctx.stroke();
+};
+}
+
+</script>
+
+</body>
+  </html>
